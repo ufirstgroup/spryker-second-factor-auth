@@ -1,0 +1,40 @@
+{
+  "name": "spryker-ufirst/second-factor-auth",
+  "type": "library",
+  "description": "Second Factor Authentication for Spryker ZED",
+  "require": {
+    "php": ">=7.2",
+    "spryker/auth": "^3.6.0",
+    "sonata-project/google-authenticator": "^2.2.0",
+    "spryker/ramsey-uuid": "1.0.0"
+  },
+  "require-dev": {
+    "spryker/application": "*",
+    "spryker/config": "*",
+    "spryker/container": "*",
+    "spryker/event-dispatcher": "*",
+    "spryker/propel": "*",
+    "spryker/silex": "*",
+    "spryker/testify": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "SprykerUFirst\\": "src/SprykerUFirst/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SprykerUFirstTest\\": "tests/SprykerUFirstTest/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

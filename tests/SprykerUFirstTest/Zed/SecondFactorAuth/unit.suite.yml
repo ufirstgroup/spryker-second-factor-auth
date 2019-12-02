@@ -1,0 +1,5 @@
+actor: SecondFactorAuthUnitTester
+modules:
+    enabled:
+        - \SprykerUFirstTest\Zed\SecondFactorAuth\Helper\Unit
+        - Asserts

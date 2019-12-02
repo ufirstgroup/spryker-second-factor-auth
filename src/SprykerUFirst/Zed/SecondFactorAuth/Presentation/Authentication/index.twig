@@ -1,0 +1,30 @@
+{% extends '@Auth/Layout/layout.twig' %}
+
+{% form_theme form '@SecondFactorAuth/Layout/form.twig' %}
+
+{% block content %}
+
+    <div>
+        {{ form_start(form) }}
+
+            {% include '@Auth/Partial/form-message.twig' %}
+
+            <p>
+                {{ 'You are using second factor authentication. User your mobile application and enter the code into the field below.' | trans }}
+            </p>
+
+            {{ form_errors(form) }}
+
+            {{ form_row(form.code) }}
+
+            <div class="form-group"><button class="btn btn-success btn-block btn-outline btn" type="submit">{{ 'Authenticate' | trans }}</button></div>
+
+
+            {{ form_rest(form) }}
+
+        {{ form_end(form) }}
+
+        <a href='/auth/logout'>{{ 'Logout' | trans }}</a>
+    </div>
+
+{% endblock %}

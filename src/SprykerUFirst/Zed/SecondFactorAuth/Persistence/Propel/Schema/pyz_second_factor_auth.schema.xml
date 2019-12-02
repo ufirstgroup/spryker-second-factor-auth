@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<database
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="zed"
+    xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+    namespace="Orm\Zed\SecondFactorAuth\Persistence"
+    package="src.Orm.Zed.SecondFactorAuth.Persistence">
+
+    <table name="spy_ufg_second_factor_auth_trusted_device" phpName="SpyUfgSecondFactorAuthTrustedDevice">
+        <column name="id_second_factor_auth_trusted_device" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <id-method-parameter value="spy_ufg_second_factor_auth_trusted_device_pk_seq"/>
+
+        <column name="fk_user" type="INTEGER" required="true"/>
+        <column name="device" type="VARCHAR" size="127" required="true"/>
+        <behavior name="timestampable"/>
+
+        <unique name="spy_ufg_second_factor_auth_trusted_device-device">
+            <unique-column name="device"/>
+        </unique>
+
+        <foreign-key foreignTable="spy_user" phpName="User" onDelete="CASCADE">
+            <reference local="fk_user" foreign="id_user"/>
+        </foreign-key>
+    </table>
+
+    <table name="spy_ufg_second_factor_auth_secret" phpName="SpyUfgSecondFactorAuthSecret">
+        <column name="id_spy_second_factor_auth_secret" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <id-method-parameter value="spy_ufg_spy_second_factor_auth_secret_pk_seq"/>
+
+        <column name="fk_user" type="INTEGER" required="true"/>
+        <column name="secret" required="false" size="255" type="VARCHAR"/>
+
+        <behavior name="timestampable"/>
+
+        <foreign-key foreignTable="spy_user" phpName="User" onDelete="CASCADE">
+            <reference local="fk_user" foreign="id_user"/>
+        </foreign-key>
+    </table>
+</database>

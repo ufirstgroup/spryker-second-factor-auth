@@ -1,0 +1,60 @@
+{{ form_start(form) }}
+
+{{ form_errors(form) }}
+
+
+{% if status == 'unregistered' %}
+
+   {% if is_required %}
+       <div class='secalert'>
+           <h2>{{ 'Second Factor Authentication is a Requirement' | trans }}</h2>
+           <h3>{{ 'Please enable 2FA now!' | trans }}</h3>
+       </div>
+       <p>
+           {{ 'You are currently not registered for two factor authentication.
+                        However, the administrator decided to make 2FA mandatory on this server.
+                        In order to enable 2FA, please install one of the following applications
+                        on your mobile device, scan the barcode and enter the resulting number
+                        into the field below.' | trans }}
+       </p>
+   {% else %}
+       <p>
+           {{ 'You are currently not registered for two factor authentication.
+            In order to register, please install one of the following applications
+            on your mobile device, scan the barcode and enter the resulting number
+            into the field below.' | trans }}
+       </p>
+   {% endif %}
+
+    <div class="second-factor-device-list">
+        <b>{{ 'Install one of these applications for 2FA: ' | trans }}</b><a target="_blank" href="https://authy.com/">Authy</a> (preferred) | <a target="_blank" href="https://support.google.com/accounts/answer/1066447">Google Authenticator</a>
+    </div>
+
+    <p>
+        <img src={{ qr_code_url }}>
+    </p>
+    <p>
+    <div>Alternatively you can enter the code manually: <b>{{ secret }}</b></div>
+    </p>
+
+    {{ form_row(form.code) }}
+{%  else %}
+    <p>
+        {{ 'YES! Your account is secured by second factor authentication. If you must, use the button below to disable 2FA.' | trans }}
+    </p>
+
+{%  endif %}
+
+<div class="form-group">
+    <button class="btn btn-success btn-block btn-outline btn" type="submit">
+        {%  if status == 'registered' %}
+            {{ 'Unegister' | trans }}
+        {% else %}
+            {{ 'Register' | trans }}
+        {%  endif %}
+    </button>
+</div>
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}

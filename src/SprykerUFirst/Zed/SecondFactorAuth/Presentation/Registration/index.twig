@@ -1,0 +1,5 @@
+{% if status != 'registered' and is_required %}
+    {% include '@SecondFactorAuth/Registration/partials/required.twig' %}
+{% else %}
+    {% include '@SecondFactorAuth/Registration/partials/regular.twig' %}
+{% endif %}

@@ -1,0 +1,26 @@
+namespace: SprykerUFirstTest\Zed\SecondFactorAuth
+
+paths:
+  tests: .
+  data: ../../../_data
+  support: _support
+  log: ../../../_output
+
+coverage:
+  enabled: true
+  remote: false
+  show_uncovered: true
+  low_limit: 99
+  high_limit: 100
+  whitelist:
+    include:
+      - "../../../../src/SprykerUFirst/*/SecondFactorAuth/*.php"
+    exclude:
+      - "../../../../src/SprykerUFirst/*DependencyProvider.php"
+      - "../../../../src/SprykerUFirst/*Config.php"
+      - "../../../../src/SprykerUFirst/*Factory.php"
+      - "../../../../src/SprykerUFirst/*Controller.php"
+      - "../../../../src/SprykerUFirst/*Facade.php"
+      - "../../../../src/SprykerUFirst/*Repository.php"
+      - "../../../../src/SprykerUFirst/*QueryContainer.php"
+      - "../../../../src/SprykerUFirst/*EntityManager.php"

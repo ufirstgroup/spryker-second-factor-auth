@@ -1,0 +1,39 @@
+namespace: SprykerUFirstTest
+actor: Tester
+
+include:
+  - tests/SprykerUFirstTest/*/*
+
+paths:
+  tests: tests
+  support: tests/_support
+  log: tests/_output
+  data: tests/_data
+  envs: tests/_envs
+
+settings:
+  bootstrap: _bootstrap.php
+  suite_class: \PHPUnit_Framework_TestSuite
+  colors: true
+  memory_limit: 1024M
+  log: true
+
+
+coverage:
+  enabled: true
+  remote: false
+  show_uncovered: true
+  low_limit: 99
+  high_limit: 100
+  whitelist:
+    include: ['src/*']
+    exclude:
+      - "src/SprykerUFirst/*DependencyProvider.php"
+      - "src/SprykerUFirst/*Config.php"
+      - "src/SprykerUFirst/*Controller.php"
+      - "src/SprykerUFirst/*Factory.php"
+      - "src/SprykerUFirst/*Facade.php"
+      - "src/SprykerUFirst/*Repository.php"
+      - "src/SprykerUFirst/*QueryContainer.php"
+      - "src/SprykerUFirst/*EntityManager.php"
+

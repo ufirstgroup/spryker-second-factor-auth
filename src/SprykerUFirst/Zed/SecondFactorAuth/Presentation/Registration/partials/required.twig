@@ -1,0 +1,17 @@
+{% extends '@Gui/Layout/layout-plain.twig' %}
+
+{% block head_css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/css/pyz-zed-application-additional.css">
+{% endblock %}
+
+{% block content %}
+
+    <div id="wrapper">
+        <div id="page-wrapper-plain" class="gray-bg wrapper wrapper-content second-factor-reg-plain">
+            {% include '@Messenger/Partials/flash-messages.twig' %}
+            {% include '@SecondFactorAuth/Registration/partials/form.twig' %}
+        </div>
+    </div>
+
+{% endblock %}
