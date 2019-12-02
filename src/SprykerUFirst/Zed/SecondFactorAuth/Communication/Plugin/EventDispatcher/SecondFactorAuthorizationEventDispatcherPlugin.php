@@ -73,6 +73,7 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
 
         if ($config->getIsSecondFactorAuthRequired() && !$secondFactorAuthFacade->isUserRegistered()) {
             $event->setResponse(new RedirectResponse($config->getSecondFactorAuthRegistrationUrl()));
+            return $event;
         }
 
         $event->setResponse(new RedirectResponse($config->getSecondFactorAuthUrl()));

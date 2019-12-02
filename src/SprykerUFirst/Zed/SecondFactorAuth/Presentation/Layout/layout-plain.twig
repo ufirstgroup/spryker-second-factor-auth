@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html data-application-locale="{{ app.locale }}">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block head_title %}{% if title is defined %}{{ title | trans }}{% endif %}{% endblock %}</title>
+
+    {% block head_css %}
+        <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-gui-commons.css') }}">
+    {% endblock %}
+
+</head>
+<body>
+
+{% block content -%}{%- endblock %}
+
+{% block footer_js %}
+{% block common_js %}
+    <script src="{{ assetsPath('js/spryker-zed-gui-commons.js') }}"></script>
+{% endblock %}
+{% block init_js %}
+    <script src="{{ assetsPath('js/spryker-zed-gui-init.js') }}"></script>
+{% endblock %}
+{% endblock %}
+
+</body>
+</html>
