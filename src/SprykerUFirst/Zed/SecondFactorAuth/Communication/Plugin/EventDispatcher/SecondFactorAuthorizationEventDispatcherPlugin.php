@@ -2,6 +2,7 @@
 
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\EventDispatcher;
 
+use Spryker\Shared\Auth\AuthConstants;
 use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\EventDispatcher\EventDispatcherInterface;
@@ -57,25 +58,37 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
         $controller = $request->attributes->get('controller');
         $action = $request->attributes->get('action');
 
+        # Can we ignore authentication for this route?
         if ($authFacade->isIgnorable($module, $controller, $action)) {
             return $event;
         }
 
+        # Can we ignore 2FA for this route?
         if ($secondFactorAuthFacade->isIgnorable($module, $controller, $action)) {
             return $event;
         }
 
+        # No 2FA for users authenticated with header token.
+        $token = $request->headers->get(AuthConstants::AUTH_TOKEN);
+        if ($token && $authFacade->isAuthenticated($token)) {
+            return $event;
+        }
+
+        # Are we already authenticated with two factors? => all good.
+        # Are we not registered for 2FA and 2FA is not required? => all good.
         if ($secondFactorAuthFacade->isAuthenticated($request->cookies->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_DEVICE_COOKIE_NAME))
             || (!$config->getIsSecondFactorAuthRequired() && !$secondFactorAuthFacade->isUserRegistered())
         ) {
             return $event;
         }
 
+        # Are we not registered for 2FA but 2FA required? => redirect to 2FA registration page.
         if ($config->getIsSecondFactorAuthRequired() && !$secondFactorAuthFacade->isUserRegistered()) {
             $event->setResponse(new RedirectResponse($config->getSecondFactorAuthRegistrationUrl()));
             return $event;
         }
 
+        # We are registered for 2FA but we're not authenticated - redirect to 2FA page.
         $event->setResponse(new RedirectResponse($config->getSecondFactorAuthUrl()));
 
         return $event;
