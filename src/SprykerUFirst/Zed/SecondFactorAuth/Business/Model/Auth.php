@@ -278,13 +278,13 @@ class Auth
     }
 
     /**
-     * @param string $bundle
-     * @param string $controller
-     * @param string $action
+     * @param string|null $bundle
+     * @param string|null $controller
+     * @param string|null $action
      *
      * @return bool
      */
-    public function isIgnorablePath(string $bundle, string $controller, string $action): bool
+    public function isIgnorablePath(?string $bundle, ?string $controller, ?string $action): bool
     {
         $ignorable = $this->config->getIgnorable();
         foreach ($ignorable as $ignore) {

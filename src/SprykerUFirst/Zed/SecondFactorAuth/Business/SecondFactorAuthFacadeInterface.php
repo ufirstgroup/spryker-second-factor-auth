@@ -14,13 +14,13 @@ interface SecondFactorAuthFacadeInterface
     public function isAuthenticated(?string $device): bool;
 
     /**
-     * @param string $bundle
-     * @param string $controller
-     * @param string $action
+     * @param string|null $bundle
+     * @param string|null $controller
+     * @param string|null $action
      *
      * @return bool
      */
-    public function isIgnorable(string $bundle, string $controller, string $action): bool;
+    public function isIgnorable(?string $bundle, ?string $controller, ?string $action): bool;
 
     /**
      * @param string $device

@@ -26,13 +26,13 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
-     * @param string $bundle
-     * @param string $controller
-     * @param string $action
+     * @param string|null $bundle
+     * @param string|null $controller
+     * @param string|null $action
      *
      * @return bool
      */
-    public function isIgnorable(string $bundle, string $controller, string $action): bool
+    public function isIgnorable(?string $bundle, ?string $controller, ?string $action): bool
     {
         return $this->getFactory()
             ->createAuth()
