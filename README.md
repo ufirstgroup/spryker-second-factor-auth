@@ -1,4 +1,4 @@
-# Spryker Second Factor Authentication
+# Second Factor Authentication for the Spryker Administration Interface
 
 ## Installation
 
@@ -38,3 +38,41 @@ use Pyz\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 $config[SecondFactorAuthConstants::SECOND_FACTOR_AUTH_REQUIRED] = true;
 ```
 
+## Add 2FA Status to the User Table
+
+In order to see the 2FA status (enabled/disabled) on each user in the administration GUI, add the two table expander
+plugins to the `UserDependencyProvider` in your project space:
+
+```php
+<?php
+
+namespace Pyz\Zed\User;
+
+use Spryker\Zed\User\UserDependencyProvider as SprykerUserDependencyProvider;
+use SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\Table\SecondFactorAuthUserTableConfigExpanderPlugin;
+use SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\Table\SecondFactorAuthUserTableDataExpanderPlugin;
+
+class UserDependencyProvider extends SprykerUserDependencyProvider
+{
+
+    /**
+     * @return \Spryker\Zed\UserExtension\Dependency\Plugin\UserTableDataExpanderPluginInterface[]
+     */
+    protected function getUserTableDataExpanderPlugins(): array
+    {
+        return [
+            new SecondFactorAuthUserTableDataExpanderPlugin(),
+        ];
+    }
+
+    /**
+     * @return \Spryker\Zed\UserExtension\Dependency\Plugin\UserTableConfigExpanderPluginInterface[]
+     */
+    protected function getUserTableConfigExpanderPlugins(): array
+    {
+        return [
+            new SecondFactorAuthUserTableConfigExpanderPlugin(),
+        ];
+    }
+}
+```

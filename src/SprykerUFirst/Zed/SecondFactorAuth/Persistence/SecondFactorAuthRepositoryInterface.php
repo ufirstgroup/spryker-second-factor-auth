@@ -34,4 +34,11 @@ interface SecondFactorAuthRepositoryInterface
      * @return \Generated\Shared\Transfer\UserTransfer
      */
     public function addSecretToUserTransfer(UserTransfer $userTransfer): UserTransfer;
+
+    /**
+     * @param int $idUser
+     *
+     * @return bool
+     */
+    public function doesUserHaveSecret(int $idUser): bool;
 }

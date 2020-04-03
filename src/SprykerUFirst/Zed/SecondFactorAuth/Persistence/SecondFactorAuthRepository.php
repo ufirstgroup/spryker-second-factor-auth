@@ -56,4 +56,18 @@ class SecondFactorAuthRepository extends AbstractRepository implements SecondFac
 
         return $userTransfer;
     }
+
+    /**
+     * @param int $idUser
+     *
+     * @return bool
+     */
+    public function doesUserHaveSecret(int $idUser): bool
+    {
+        $userSecretEntity = $this->getFactory()
+            ->createSpyUfgSecondFactorAuthSecretQuery()
+            ->findOneByFkUser($idUser);
+
+        return $userSecretEntity !== null;
+    }
 }
