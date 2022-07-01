@@ -2,6 +2,10 @@
 
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Controller;
 
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\RegistrationForm;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
@@ -38,6 +42,9 @@ class RegistrationController extends AbstractController
         } else {
             $secret = $this->getFacade()->createSecret();
             $qrCodeUrl = $this->getFacade()->getQrCodeUrl($secret);
+
+            $qrCodeImage = 'data:image/svg+xml;base64,' . $this->generateQrCodeInSvg($qrCodeUrl);
+
             $form = $this
                 ->getFactory()
                 ->createRegistrationForm($secret);
@@ -46,7 +53,7 @@ class RegistrationController extends AbstractController
                 'status' => 'unregistered',
                 'is_required' => $this->getFactory()->getConfig()->getIsSecondFactorAuthRequired(),
                 'form' => $form->createView(),
-                'qr_code_url' => $qrCodeUrl,
+                'qr_code_url' => $qrCodeImage,
                 'secret' => $secret,
             ]);
         }
@@ -75,6 +82,7 @@ class RegistrationController extends AbstractController
 
             if ($isRegistered) {
                 $this->addSuccessMessage('You are successfully registered for second factor authentication.');
+
                 return $this->redirectResponse(SecondFactorAuthConfig::URL_REGISTRATION);
             } else {
                 $this->addErrorMessage('The registration failed, please try again.');
@@ -93,6 +101,7 @@ class RegistrationController extends AbstractController
         }
 
         $this->addErrorMessage('Registration failed!');
+
         return $this->redirectResponse(SecondFactorAuthConfig::URL_REGISTRATION);
     }
 
@@ -103,6 +112,24 @@ class RegistrationController extends AbstractController
     {
         $this->getFacade()->unregisterUser();
         $this->addSuccessMessage('Second factor authentication is disabled for your account now.');
+
         return $this->redirectResponse(SecondFactorAuthConfig::URL_REGISTRATION);
+    }
+
+    /**
+     * @param string $qrCodeUrl
+     *
+     * @return string
+     */
+    protected function generateQrCodeInSvg(string $qrCodeUrl): string
+    {
+        $writer = new Writer(
+            new ImageRenderer(
+                new RendererStyle(400),
+                new SvgImageBackEnd()
+            )
+        );
+
+        return base64_encode($writer->writeString($qrCodeUrl));
     }
 }
