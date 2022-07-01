@@ -15,6 +15,13 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     public const URL_USER_UNREGISTER = '/second-factor-auth/user/unregister';
 
     /**
+     * @uses \Spryker\Zed\SecurityGui\SecurityGuiConfig::HOME_PATH
+     *
+     * @var string
+     */
+    public const HOME_PATH = '/';
+
+    /**
      * @var array
      */
     protected $ignorable = [
@@ -65,6 +72,14 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
             'controller' => $controller,
             'action' => $action,
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getHomePath(): string
+    {
+        return static::HOME_PATH;
     }
 
     /**
