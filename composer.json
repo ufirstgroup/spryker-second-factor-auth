@@ -4,7 +4,7 @@
   "description": "Second Factor Authentication for Spryker ZED",
   "require": {
     "php": ">=7.2",
-    "spryker/auth": "^3.6.0",
+    "spryker/security": "^1.6.0",
     "sonata-project/google-authenticator": "^2.2.0",
     "spryker/ramsey-uuid": "1.0.0 || 2.0.0"
   },
