@@ -80,7 +80,7 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
      */
     public function getHostname(): string
     {
-        return $this->get(ApplicationConstants::HOST_ZED);
+        return $this->get(ApplicationConstants::BASE_URL_ZED);
     }
 
     /**
