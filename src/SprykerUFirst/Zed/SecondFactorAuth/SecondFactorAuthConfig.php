@@ -19,6 +19,11 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
      */
     protected $ignorable = [
         [
+            'bundle' => 'security-gui',
+            'controller' => '*',
+            'action' => '*',
+        ],
+        [
             'bundle' => 'second-factor-auth',
             'controller' => 'authentication',
             'action' => 'index',
