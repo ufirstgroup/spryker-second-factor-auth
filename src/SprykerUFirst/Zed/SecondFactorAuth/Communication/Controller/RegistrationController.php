@@ -88,13 +88,16 @@ class RegistrationController extends AbstractController
                 $this->addErrorMessage('The registration failed, please try again.');
 
                 $qrCodeUrl = $this->getFacade()->getQrCodeUrl($secret);
+
+                $qrCodeImage = 'data:image/svg+xml;base64,' . $this->generateQrCodeInSvg($qrCodeUrl);
+
                 $form = $this->getFactory()->createRegistrationForm($secret);
 
                 return $this->viewResponse([
                     'status' => 'unregistered',
                     'is_required' => $this->getFactory()->getConfig()->getIsSecondFactorAuthRequired(),
                     'form' => $form->createView(),
-                    'qr_code_url' => $qrCodeUrl,
+                    'qr_code_url' => $qrCodeImage,
                     'secret' => $secret,
                 ]);
             }
