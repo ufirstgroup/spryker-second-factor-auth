@@ -9,8 +9,7 @@ use Orm\Zed\SecondFactorAuth\Persistence\SpyUfgSecondFactorAuthTrustedDevice;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
-use Sonata\GoogleAuthenticator\GoogleAuthenticatorInterface;
-use Sonata\GoogleAuthenticator\GoogleQrUrl;
+use PragmaRX\Google2FA\Google2FA;
 use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 
@@ -27,7 +26,7 @@ class Auth
     protected $config;
 
     /**
-     * @var \Sonata\GoogleAuthenticator\GoogleAuthenticatorInterface
+     * @var \PragmaRX\Google2FA\Google2FA;
      */
     protected $googleAuthenticator;
 
@@ -45,14 +44,14 @@ class Auth
      * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
      * @param \SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig $config
      * @param \SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface $repository
-     * @param \Sonata\GoogleAuthenticator\GoogleAuthenticatorInterface $googleAuthenticator
+     * @param PragmaRX\Google2FA\Google2FA $googleAuthenticator
      * @param \SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface $entityManager
      */
     public function __construct(
         UserFacadeInterface $userFacade,
         SecondFactorAuthConfig $config,
         SecondFactorAuthRepositoryInterface $repository,
-        GoogleAuthenticatorInterface $googleAuthenticator,
+        Google2FA $googleAuthenticator,
         SecondFactorAuthEntityManagerInterface $entityManager
     ) {
         $this->userFacade = $userFacade;
@@ -76,7 +75,7 @@ class Auth
 
         $userTransfer = $this->getCurrentUser();
         $secret = $userTransfer->getSecondFactorAuthSecret();
-        if (!$this->googleAuthenticator->checkCode($secret, $code)) {
+        if (!$this->googleAuthenticator->verifyKey($secret, $code)) {
             return false;
         }
 
@@ -138,7 +137,7 @@ class Auth
      */
     public function createSecret(): string
     {
-        $secret = $this->googleAuthenticator->generateSecret();
+        $secret = $this->googleAuthenticator->generateSecretKey();
 
         return $secret;
     }
@@ -155,7 +154,7 @@ class Auth
         $hostname = $this->config->getHostname();
         $userTransfer = $this->loadCurrentUser();
 
-        return GoogleQrUrl::generate($hostname, $secret, $userTransfer->getUsername());
+        return $this->googleAuthenticator->getQRCodeUrl($hostname, $userTransfer->getUsername(), $secret);
     }
 
     /**
@@ -166,7 +165,7 @@ class Auth
      */
     public function registerCurrentUser(string $secret, string $code): bool
     {
-        if (!$this->googleAuthenticator->checkCode($secret, $code)) {
+        if (!$this->googleAuthenticator->verifyKey($secret, $code)) {
             return false;
         }
         $currentUserTransfer = $this->getCurrentUser();
