@@ -10,7 +10,6 @@ use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManager
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
 use PragmaRX\Google2FA\Google2FA;
-use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 
 class Auth
@@ -287,9 +286,9 @@ class Auth
     {
         $ignorable = $this->config->getIgnorable();
         foreach ($ignorable as $ignore) {
-            if (($bundle === $ignore['bundle'] || $ignore['bundle'] === AuthConstants::AUTHORIZATION_WILDCARD) &&
-                ($controller === $ignore['controller'] || $ignore['controller'] === AuthConstants::AUTHORIZATION_WILDCARD) &&
-                ($action === $ignore['action'] || $ignore['action'] === AuthConstants::AUTHORIZATION_WILDCARD)
+            if (($bundle === $ignore['bundle'] || $ignore['bundle'] === '*') &&
+                ($controller === $ignore['controller'] || $ignore['controller'] === '*') &&
+                ($action === $ignore['action'] || $ignore['action'] === '*')
             ) {
                 return true;
             }
