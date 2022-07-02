@@ -25,10 +25,12 @@ class UserController extends AbstractController
         $idUser = $request->get('id-user');
         if (empty($idUser)) {
             $this->addErrorMessage('You have to pass a user!');
-        } else {
-            $this->getFacade()->unregisterUser($idUser);
-            $this->addSuccessMessage('User is unregistered.');
+            
+            return $this->redirectResponse('/user');
         }
+
+        $this->getFacade()->unregisterUser($idUser);
+        $this->addSuccessMessage('User is unregistered.');
         return $this->redirectResponse('/user');
     }
 }

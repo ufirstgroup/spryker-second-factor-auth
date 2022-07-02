@@ -39,24 +39,24 @@ class RegistrationController extends AbstractController
                 'status' => 'registered',
                 'form' => $form->createView(),
             ]);
-        } else {
-            $secret = $this->getFacade()->createSecret();
-            $qrCodeUrl = $this->getFacade()->getQrCodeUrl($secret);
-
-            $qrCodeImage = 'data:image/svg+xml;base64,' . $this->generateQrCodeInSvg($qrCodeUrl);
-
-            $form = $this
-                ->getFactory()
-                ->createRegistrationForm($secret);
-
-            return $this->viewResponse([
-                'status' => 'unregistered',
-                'is_required' => $this->getFactory()->getConfig()->getIsSecondFactorAuthRequired(),
-                'form' => $form->createView(),
-                'qr_code_url' => $qrCodeImage,
-                'secret' => $secret,
-            ]);
         }
+
+        $secret = $this->getFacade()->createSecret();
+        $qrCodeUrl = $this->getFacade()->getQrCodeUrl($secret);
+
+        $qrCodeImage = 'data:image/svg+xml;base64,' . $this->generateQrCodeInSvg($qrCodeUrl);
+
+        $form = $this
+            ->getFactory()
+            ->createRegistrationForm($secret);
+
+        return $this->viewResponse([
+            'status' => 'unregistered',
+            'is_required' => $this->getFactory()->getConfig()->getIsSecondFactorAuthRequired(),
+            'form' => $form->createView(),
+            'qr_code_url' => $qrCodeImage,
+            'secret' => $secret,
+        ]);
     }
 
     /**
@@ -84,23 +84,23 @@ class RegistrationController extends AbstractController
                 $this->addSuccessMessage('You are successfully registered for second factor authentication.');
 
                 return $this->redirectResponse(SecondFactorAuthConfig::URL_REGISTRATION);
-            } else {
-                $this->addErrorMessage('The registration failed, please try again.');
-
-                $qrCodeUrl = $this->getFacade()->getQrCodeUrl($secret);
-
-                $qrCodeImage = 'data:image/svg+xml;base64,' . $this->generateQrCodeInSvg($qrCodeUrl);
-
-                $form = $this->getFactory()->createRegistrationForm($secret);
-
-                return $this->viewResponse([
-                    'status' => 'unregistered',
-                    'is_required' => $this->getFactory()->getConfig()->getIsSecondFactorAuthRequired(),
-                    'form' => $form->createView(),
-                    'qr_code_url' => $qrCodeImage,
-                    'secret' => $secret,
-                ]);
             }
+
+            $this->addErrorMessage('The registration failed, please try again.');
+
+            $qrCodeUrl = $this->getFacade()->getQrCodeUrl($secret);
+
+            $qrCodeImage = 'data:image/svg+xml;base64,' . $this->generateQrCodeInSvg($qrCodeUrl);
+
+            $form = $this->getFactory()->createRegistrationForm($secret);
+
+            return $this->viewResponse([
+                'status' => 'unregistered',
+                'is_required' => $this->getFactory()->getConfig()->getIsSecondFactorAuthRequired(),
+                'form' => $form->createView(),
+                'qr_code_url' => $qrCodeImage,
+                'secret' => $secret,
+            ]);
         }
 
         $this->addErrorMessage('Registration failed!');
