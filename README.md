@@ -3,11 +3,11 @@
 ## Installation
 
 ```
-composer install spryker-ufirst/second-factor-auth
+composer require spryker-ufirst/second-factor-auth
 ```
 
 Once the module is installed, add the `SecondFactorAuthorizationEventDispatcherPlugin` to the
-`EventDispatcherDependencyProvider` **after** the  `AuthorizationEventDispatcherPlugin`:
+`EventDispatcherDependencyProvider::getEventDispatcherPlugins` at the end of the array:
 
 ```php
 class EventDispatcherDependencyProvider extends SprykerEventDispatcherDependencyProvider
@@ -19,12 +19,19 @@ class EventDispatcherDependencyProvider extends SprykerEventDispatcherDependency
     {
         return [
             # ...other plugins
-            new AuthorizationEventDispatcherPlugin(),
             new SecondFactorAuthorizationEventDispatcherPlugin(),
-            # ...other plugins
         ];
     }
 }
+```
+
+And add the `SprykerUFirst` namespace to the `config_default.php`
+
+```php
+$config[KernelConstants::CORE_NAMESPACES] = [
+    ...
+    'SprykerUFirst',
+];
 ```
 
 ## Enforcing 2FA
@@ -33,8 +40,8 @@ You can enforce second factor authentication for all admin users per environment
 `config_default.php`:
 
 ```php
-use Pyz\Shared\SecondFactorAuth\SecondFactorAuthConstants;
-
+use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
+...
 $config[SecondFactorAuthConstants::SECOND_FACTOR_AUTH_REQUIRED] = true;
 ```
 

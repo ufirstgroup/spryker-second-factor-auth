@@ -6,9 +6,14 @@
 {% if status == 'unregistered' %}
 
    {% if is_required %}
+       <div class="alert alert-warning">
+           <i class="fas fa-exclamation-circle alert__icon" aria-hidden="true"></i>
+           <div class="alert__text">
+               <h2>{{ 'Second Factor Authentication is a Requirement' | trans }}</h2>
+               <h3>{{ 'Please enable 2FA now!' | trans }}</h3>
+           </div>
+       </div>
        <div class='secalert'>
-           <h2>{{ 'Second Factor Authentication is a Requirement' | trans }}</h2>
-           <h3>{{ 'Please enable 2FA now!' | trans }}</h3>
        </div>
        <p>
            {{ 'You are currently not registered for two factor authentication.
@@ -30,31 +35,59 @@
         <b>{{ 'Install one of these applications for 2FA: ' | trans }}</b><a target="_blank" href="https://authy.com/">Authy</a> (preferred) | <a target="_blank" href="https://support.google.com/accounts/answer/1066447">Google Authenticator</a>
     </div>
 
-    <p>
-        <img src={{ qr_code_url }}>
-    </p>
-    <p>
-    <div>Alternatively you can enter the code manually: <b>{{ secret }}</b></div>
-    </p>
+    <div class="row">
+        <div class="col-lg-6 d-flex justify-content-center text-center">
+            <p>
+                <img src={{ qr_code_url }}>
+            </p>
+            <p>
+            <div>Alternatively you can enter the code manually: <b>{{ secret }}</b></div>
+            </p>
 
-    {{ form_row(form.code) }}
-{%  else %}
-    <p>
-        {{ 'YES! Your account is secured by second factor authentication. If you must, use the button below to disable 2FA.' | trans }}
-    </p>
+        </div>
+        <div class="col-lg-6">
+            {{ form_row(form.code) }}
+            <div class="form-group">
+                <button class="btn btn-success btn-block btn-outline btn" type="submit">
+                    {%  if status == 'registered' %}
+                        {{ 'Unegister' | trans }}
+                    {% else %}
+                        {{ 'Register' | trans }}
+                    {%  endif %}
+                </button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% else %}
+    <div class="alert alert-success">
+        <i class="fas fa-exclamation-circle alert__icon" aria-hidden="true"></i>
+        <div class="alert__text">
+            <p>
+                {{ 'YES! Your account is secured by second factor authentication. If you must, use the button below to disable 2FA.' | trans }}
+            </p>
+        </div>
+    </div>
+    {{ form_start(form) }}
+
+    {{ form_errors(form) }}
+
+    <div class="form-group">
+        <button class="btn btn-success btn-block btn-outline btn" type="submit">
+            {%  if status == 'registered' %}
+                {{ 'Unegister' | trans }}
+            {% else %}
+                {{ 'Register' | trans }}
+            {%  endif %}
+        </button>
+    </div>
+
+    {{ form_rest(form) }}
+
+    {{ form_end(form) }}
 
 {%  endif %}
-
-<div class="form-group">
-    <button class="btn btn-success btn-block btn-outline btn" type="submit">
-        {%  if status == 'registered' %}
-            {{ 'Unegister' | trans }}
-        {% else %}
-            {{ 'Register' | trans }}
-        {%  endif %}
-    </button>
-</div>
-
-{{ form_rest(form) }}
-
-{{ form_end(form) }}

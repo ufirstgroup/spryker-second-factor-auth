@@ -1,16 +1,25 @@
 {% extends '@Gui/Layout/layout.twig' %}
 
+{% set widget_title = 'Two Factor Authentication' %}
+
 {% block head_css %}
     {{ parent() }}
 {% endblock %}
 
 {% block content %}
+    {% embed '@Gui/Partials/widget.twig' %}
 
-    <div id="wrapper" class="">
-        <div id="page-wrapper-plain" class="gray-bg">
-            {% include '@Messenger/Partials/flash-messages.twig' %}
-            {% include '@SecondFactorAuth/Registration/partials/form.twig' %}
-        </div>
-    </div>
+        {% block widget_content %}
+
+            <div id="wrapper" class="">
+                <div id="page-wrapper-plain" class="gray-bg">
+                    {% include '@Messenger/Partials/flash-messages.twig' %}
+                    {% include '@SecondFactorAuth/Registration/partials/form.twig' %}
+                </div>
+            </div>
+
+        {% endblock %}
+
+    {% endembed %}
 
 {% endblock %}

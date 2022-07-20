@@ -30,7 +30,7 @@ class AuthenticationController extends AbstractController
     {
         $currentDeviceCookie = $request->cookies->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_DEVICE_COOKIE_NAME);
         if ($this->getFacade()->isAuthenticated($currentDeviceCookie)) {
-            return $this->redirectResponse(AuthConfig::DEFAULT_URL_REDIRECT);
+            return $this->redirectResponse($this->getFactory()->getConfig()->getHomePath());
         }
 
         $form = $this
@@ -46,7 +46,7 @@ class AuthenticationController extends AbstractController
             );
 
             if ($isAuthenticated) {
-                $redirectResponse = $this->redirectResponse(AuthConfig::DEFAULT_URL_REDIRECT);
+                $redirectResponse = $this->redirectResponse($this->getFactory()->getConfig()->getHomePath());
 
                 if ($formData[AuthenticationForm::FIELD_TRUST_DEVICE]) {
                     $trustedDeviceCookie = Uuid::uuid1()->toString();

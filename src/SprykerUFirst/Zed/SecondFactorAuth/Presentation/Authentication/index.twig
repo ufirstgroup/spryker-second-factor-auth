@@ -1,4 +1,4 @@
-{% extends '@Auth/Layout/layout.twig' %}
+{% extends '@SecurityGui/Layout/layout.twig' %}
 
 {% form_theme form '@SecondFactorAuth/Layout/form.twig' %}
 
@@ -7,7 +7,7 @@
     <div>
         {{ form_start(form) }}
 
-            {% include '@Auth/Partial/form-message.twig' %}
+            {% include '@SecurityGui/Partial/form-message.twig' %}
 
             <p>
                 {{ 'You are using second factor authentication. User your mobile application and enter the code into the field below.' | trans }}

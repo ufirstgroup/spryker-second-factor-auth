@@ -49,7 +49,6 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
     protected function onKernelRequest(RequestEvent $event): RequestEvent
     {
         $config = $this->getConfig();
-        $authFacade = $this->getFactory()->getAuthFacade();
         $secondFactorAuthFacade = $this->getFacade();
 
         $request = $event->getRequest();
@@ -58,19 +57,8 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
         $controller = $request->attributes->get('controller');
         $action = $request->attributes->get('action');
 
-        # Can we ignore authentication for this route?
-        if ($authFacade->isIgnorable($module, $controller, $action)) {
-            return $event;
-        }
-
         # Can we ignore 2FA for this route?
         if ($secondFactorAuthFacade->isIgnorable($module, $controller, $action)) {
-            return $event;
-        }
-
-        # No 2FA for users authenticated with header token.
-        $token = $request->headers->get(AuthConstants::AUTH_TOKEN);
-        if ($token && $authFacade->isAuthenticated($token)) {
             return $event;
         }
 

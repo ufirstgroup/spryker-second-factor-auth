@@ -15,9 +15,21 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     public const URL_USER_UNREGISTER = '/second-factor-auth/user/unregister';
 
     /**
+     * @uses \Spryker\Zed\SecurityGui\SecurityGuiConfig::HOME_PATH
+     *
+     * @var string
+     */
+    public const HOME_PATH = '/';
+
+    /**
      * @var array
      */
     protected $ignorable = [
+        [
+            'bundle' => 'security-gui',
+            'controller' => '*',
+            'action' => '*',
+        ],
         [
             'bundle' => 'second-factor-auth',
             'controller' => 'authentication',
@@ -65,6 +77,14 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     /**
      * @return string
      */
+    public function getHomePath(): string
+    {
+        return static::HOME_PATH;
+    }
+
+    /**
+     * @return string
+     */
     public function getSecondFactorAuthRegistrationUrl(): string
     {
         return static::URL_REGISTRATION;
@@ -75,7 +95,7 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
      */
     public function getHostname(): string
     {
-        return $this->get(ApplicationConstants::HOST_ZED);
+        return $this->get(ApplicationConstants::BASE_URL_ZED);
     }
 
     /**
