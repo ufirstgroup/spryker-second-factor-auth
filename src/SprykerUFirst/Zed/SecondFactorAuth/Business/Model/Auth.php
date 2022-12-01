@@ -284,8 +284,8 @@ class Auth
      */
     public function isIgnorablePath(?string $bundle, ?string $controller, ?string $action): bool
     {
-        $ignorable = $this->config->getIgnorable();
-        foreach ($ignorable as $ignore) {
+        $ignorablePaths = $this->config->getIgnorablePaths();
+        foreach ($ignorablePaths as $ignore) {
             if (($bundle === $ignore['bundle'] || $ignore['bundle'] === '*') &&
                 ($controller === $ignore['controller'] || $ignore['controller'] === '*') &&
                 ($action === $ignore['action'] || $ignore['action'] === '*')
@@ -295,5 +295,19 @@ class Auth
         }
 
         return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer $user
+     *
+     * @return bool
+     * */
+    public function isIgnorableUser(?UserTransfer $currentUserTransfer = null): bool
+    {
+        if ($currentUserTransfer === null) {
+            $currentUserTransfer = $this->userFacade->getCurrentUser();
+        }
+
+        return $currentUserTransfer->getIsSystemUser() && !$currentUserTransfer->getIdUser();
     }
 }

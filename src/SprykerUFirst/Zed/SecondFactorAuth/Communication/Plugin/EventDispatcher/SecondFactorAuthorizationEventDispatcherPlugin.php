@@ -57,8 +57,13 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
         $controller = $request->attributes->get('controller');
         $action = $request->attributes->get('action');
 
-        # Can we ignore 2FA for this route?
-        if ($secondFactorAuthFacade->isIgnorable($module, $controller, $action)) {
+        # Can we ignore 2FA for this path?
+        if ($secondFactorAuthFacade->isIgnorablePath($module, $controller, $action)) {
+            return $event;
+        }
+
+        # Is it a systemUser and doesn't have id set? => all good.
+        if($secondFactorAuthFacade->isIgnorableUser()){
             return $event;
         }
 

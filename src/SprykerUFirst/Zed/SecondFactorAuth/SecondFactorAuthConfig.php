@@ -24,7 +24,7 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     /**
      * @var array
      */
-    protected $ignorable = [
+    protected $ignorablePaths = [
         [
             'bundle' => 'security-gui',
             'controller' => '*',
@@ -53,9 +53,9 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    public function getIgnorable(): array
+    public function getIgnorablePaths(): array
     {
-        return $this->ignorable;
+        return $this->ignorablePaths;
     }
 
     /**
@@ -65,9 +65,9 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
      *
      * @return void
      */
-    public function addIgnorable(string $bundle, string $controller, string $action): void
+    public function addIgnorablePath(string $bundle, string $controller, string $action): void
     {
-        $this->ignorable[] = [
+        $this->ignorablePaths[] = [
             'bundle' => $bundle,
             'controller' => $controller,
             'action' => $action,

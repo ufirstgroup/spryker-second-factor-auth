@@ -20,7 +20,7 @@ interface SecondFactorAuthFacadeInterface
      *
      * @return bool
      */
-    public function isIgnorable(?string $bundle, ?string $controller, ?string $action): bool;
+    public function isIgnorablePath(?string $bundle, ?string $controller, ?string $action): bool;
 
     /**
      * @param string $device
@@ -69,4 +69,11 @@ interface SecondFactorAuthFacadeInterface
      * @return string
      */
     public function getQrCodeUrl(string $secret): string;
+
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer|null $currentUserTransfer
+     *
+     * @return bool
+     */
+    public function isIgnorableUser(?UserTransfer $currentUserTransfer = null): bool;
 }

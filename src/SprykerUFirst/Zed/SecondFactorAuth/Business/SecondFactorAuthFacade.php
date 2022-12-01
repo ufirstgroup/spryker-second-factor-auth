@@ -32,7 +32,7 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
      *
      * @return bool
      */
-    public function isIgnorable(?string $bundle, ?string $controller, ?string $action): bool
+    public function isIgnorablePath(?string $bundle, ?string $controller, ?string $action): bool
     {
         return $this->getFactory()
             ->createAuth()
@@ -108,5 +108,14 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     public function getQrCodeUrl(string $secret): string
     {
         return $this->getFactory()->createAuth()->getUrl($secret);
+    }
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer|null $currentUserTransfer
+     *
+     * @return bool
+     */
+    public function isIgnorableUser(?UserTransfer $currentUserTransfer = null): bool
+    {
+        return $this->getFactory()->createAuth()->isIgnorableUser($currentUserTransfer);
     }
 }

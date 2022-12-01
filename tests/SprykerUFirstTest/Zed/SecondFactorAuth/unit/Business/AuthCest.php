@@ -600,7 +600,7 @@ class AuthCest
             $secondFactoryEntityManager->reveal()
         );
 
-        $secondFactorAuthConfig->getIgnorable()->willReturn([
+        $secondFactorAuthConfig->getIgnorablePaths()->willReturn([
             [
                 'bundle' => 'some-bundle',
                 'controller' => 'some-controller',
@@ -610,5 +610,89 @@ class AuthCest
 
         $I->assertTrue($SUT->isIgnorablePath('some-bundle', 'some-controller', 'some-action'));
         $I->assertFalse($SUT->isIgnorablePath('any-budnle', 'any-controller', 'any-action'));
+    }
+
+    /**
+     * @param \SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester $I
+     *
+     * @return void
+     */
+    public function testIsUserIgnorableSystemUser(SecondFactorAuthUnitTester $I): void
+    {
+        $I->wantToTest('the function returns true if a user isSystemUser and idUser is null.');
+
+        # Data:
+        $userTransfer = (new UserBuilder())
+            ->seed([
+                'idUser' => null,
+                'isSystemUser' => true,
+            ])
+            ->build();
+
+        # Prophecies:
+        $userFacade = $I->prophesize(UserFacadeInterface::class);
+        $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
+        $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
+        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
+
+        # Mocks:
+        $userFacade->getCurrentUser()->willReturn($userTransfer);
+
+        # Expected calls:
+
+        # system under test:
+        $SUT = new Auth(
+            $userFacade->reveal(),
+            $secondFactorAuthConfig->reveal(),
+            $secondFactorRepository->reveal(),
+            $googleAuthenticator->reveal(),
+            $secondFactoryEntityManager->reveal()
+        );
+
+        $result = $SUT->isIgnorableUser($userTransfer);
+        $I->assertTrue($result);
+    }
+    /**
+     * @param \SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester $I
+     *
+     * @return void
+     */
+    public function testIsUserIgnorableRegularUser(SecondFactorAuthUnitTester $I): void
+    {
+        $I->wantToTest('the function returns false if a user is not SystemUser and idUser is not null.');
+
+        # Data:
+        $fakeUserId = 1234;
+        $userTransfer = (new UserBuilder())
+            ->seed([
+                'idUser' => $fakeUserId,
+                'isSystemUser' => null,
+            ])
+            ->build();
+
+        # Prophecies:
+        $userFacade = $I->prophesize(UserFacadeInterface::class);
+        $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
+        $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
+        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
+
+        # Mocks:
+        $userFacade->getCurrentUser()->willReturn($userTransfer);
+
+        # Expected calls:
+
+        # system under test:
+        $SUT = new Auth(
+            $userFacade->reveal(),
+            $secondFactorAuthConfig->reveal(),
+            $secondFactorRepository->reveal(),
+            $googleAuthenticator->reveal(),
+            $secondFactoryEntityManager->reveal()
+        );
+
+        $result = $SUT->isIgnorableUser($userTransfer);
+        $I->assertFalse($result);
     }
 }
