@@ -1,21 +1,24 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirstTest\Zed\SecondFactorAuth\unit\Business\Model;
 
 use DateTime;
 use Generated\Shared\DataBuilder\UserBuilder;
 use Orm\Zed\SecondFactorAuth\Persistence\SpyUfgSecondFactorAuthTrustedDevice;
 use Orm\Zed\SecondFactorAuth\Persistence\SpyUfgSecondFactorAuthTrustedDeviceQuery;
+use PragmaRX\Google2FA\Google2FA;
 use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophet;
+use Spryker\Zed\User\Business\UserFacadeInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Business\Model\Auth;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
 use SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester;
-use Sonata\GoogleAuthenticator\GoogleAuthenticatorInterface;
-use Spryker\Zed\User\Business\UserFacadeInterface;
 
 /**
  * Auto-generated group annotations
@@ -32,6 +35,16 @@ use Spryker\Zed\User\Business\UserFacadeInterface;
 class AuthCest
 {
     /**
+     * @var string
+     */
+    private const IGNORABLE_USER = 'ignorable-user';
+
+    /**
+     * @var string
+     */
+    private const NOT_IGNORABLE_USER = 'not-ignorable-user';
+
+    /**
      * @param \SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester $I
      *
      * @return void
@@ -47,7 +60,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # system under test:
@@ -56,7 +69,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         # Mocks:
@@ -86,7 +99,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # system under test:
@@ -95,13 +108,13 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         # Mocks:
         $userFacade->hasCurrentUser()->willReturn(true);
         $userFacade->getCurrentUser()->willReturn($userTransfer);
-        $googleAuthenticator->checkCode($fakeSecret, Argument::any())->willReturn(false);
+        $googleAuthenticator->verifyKey($fakeSecret, Argument::any())->willReturn(false);
         $secondFactorRepository->addSecretToUserTransfer($userTransfer)->willReturn($userTransfer);
 
         $result = $SUT->authenticate($fakeCode);
@@ -128,7 +141,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # system under test:
@@ -137,14 +150,14 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         # Mocks:
         $userFacade->hasCurrentUser()->willReturn(true);
         $userFacade->getCurrentUser()->willReturn($userTransfer);
         $userFacade->setCurrentUser(Argument::any())->willReturn();
-        $googleAuthenticator->checkCode($fakeSecret, Argument::any())->willReturn(true);
+        $googleAuthenticator->verifyKey($fakeSecret, Argument::any())->willReturn(true);
         $secondFactorRepository->addSecretToUserTransfer($userTransfer)->willReturn($userTransfer);
         $secondFactorRepository->getTrustedDevicesByUserId()->willReturn($secondFactorRepository);
 
@@ -161,9 +174,6 @@ class AuthCest
     {
         $I->wantToTest('the function returns true for previously authenticated users.');
 
-        /**
-         * @var \Generated\Shared\Transfer\UserTransfer $userTransferArgumentExpectation
-         */
         # Data:
         $userTransfer = (new UserBuilder())
             ->seed(['idUser' => 1234])
@@ -189,7 +199,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $result = $SUT->isAuthenticated(null);
@@ -205,9 +215,6 @@ class AuthCest
     {
         $I->wantToTest('the function returns true for a given already trusted device.');
 
-        /**
-         * @var \Generated\Shared\Transfer\UserTransfer $userTransferArgumentExpectation
-         */
         # Data:
         $fakeDevice = 'fake_device';
         $fakeUserId = 1234;
@@ -242,7 +249,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $result = $SUT->isAuthenticated($fakeDevice);
@@ -258,9 +265,6 @@ class AuthCest
     {
         $I->wantToTest('the function returns false if not authenticated and no trusted device.');
 
-        /**
-         * @var \Generated\Shared\Transfer\UserTransfer $userTransferArgumentExpectation
-         */
         # Data:
         $fakeDevice = 'fake_device';
         $fakeUserId = 1234;
@@ -290,7 +294,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $result = $SUT->isAuthenticated($fakeDevice);
@@ -306,9 +310,6 @@ class AuthCest
     {
         $I->wantToTest('the function returns false if secret and code dont match.');
 
-        /**
-         * @var \Generated\Shared\Transfer\UserTransfer $userTransferArgumentExpectation
-         */
         # Data:
         $fakeSecret = 'fake_secret';
         $fakeCode = 'fake_code';
@@ -317,7 +318,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         $userTransfer = (new UserBuilder())
@@ -325,7 +326,7 @@ class AuthCest
             ->build();
 
         # Mocks:
-        $googleAuthenticator->checkCode($fakeSecret, $fakeCode)->willReturn(false);
+        $googleAuthenticator->verifyKey($fakeSecret, $fakeCode)->willReturn(false);
 
         # system under test:
         $SUT = new Auth(
@@ -333,7 +334,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
         $result = $SUT->registerCurrentUser($fakeSecret, $fakeCode);
         $I->assertFalse($result);
@@ -348,9 +349,6 @@ class AuthCest
     {
         $I->wantToTest('the function updates the user and sets current user and returns true if secret and code match.');
 
-        /**
-         * @var \Generated\Shared\Transfer\UserTransfer $userTransferArgumentExpectation
-         */
         # Data:
         $fakeSecret = 'fake_secret';
         $fakeCode = 'fake_code';
@@ -358,16 +356,15 @@ class AuthCest
             ->seed(['idUser' => 1234])
             ->build();
 
-
         # Prophecies:
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
-        $googleAuthenticator->checkCode($fakeSecret, $fakeCode)->willReturn(true);
+        $googleAuthenticator->verifyKey($fakeSecret, $fakeCode)->willReturn(true);
         $secondFactorRepository->addSecretToUserTransfer($userTransfer)->willReturn($userTransfer);
         $userFacade->getCurrentUser()->willReturn($userTransfer);
 
@@ -385,7 +382,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
         $result = $SUT->registerCurrentUser($fakeSecret, $fakeCode);
         $I->assertTrue($result);
@@ -430,7 +427,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $SUT->unregisterUser();
@@ -477,7 +474,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $SUT->unregisterUser();
@@ -521,7 +518,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $result = $SUT->isUserRegistered($userTransfer);
@@ -567,7 +564,7 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $result = $SUT->isUserRegistered();
@@ -590,14 +587,13 @@ class AuthCest
         $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
-
         # system under test:
         $SUT = new Auth(
             $userFacade->reveal(),
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
         $secondFactorAuthConfig->getIgnorablePaths()->willReturn([
@@ -617,18 +613,15 @@ class AuthCest
      *
      * @return void
      */
-    public function testIsUserIgnorableSystemUser(SecondFactorAuthUnitTester $I): void
+    public function testIsUserIsIgnorable(SecondFactorAuthUnitTester $I): void
     {
-        $I->wantToTest('the function returns true if a user isSystemUser and idUser is null.');
+        $I->wantToTest('the function returns true if a user is in the ignorable list.');
 
-        # Data:
         $userTransfer = (new UserBuilder())
             ->seed([
-                'idUser' => null,
-                'isSystemUser' => true,
+                'username' => static::IGNORABLE_USER,
             ])
             ->build();
-
         # Prophecies:
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
@@ -647,30 +640,29 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
+
+        $secondFactorAuthConfig->getIgnorableUsers()->willReturn([static::IGNORABLE_USER]);
 
         $result = $SUT->isIgnorableUser($userTransfer);
         $I->assertTrue($result);
     }
+
     /**
      * @param \SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester $I
      *
      * @return void
      */
-    public function testIsUserIgnorableRegularUser(SecondFactorAuthUnitTester $I): void
+    public function testIsUserNotIgnorable(SecondFactorAuthUnitTester $I): void
     {
-        $I->wantToTest('the function returns false if a user is not SystemUser and idUser is not null.');
+        $I->wantToTest('the function returns false if a user is NOT in the ignorable list.');
 
-        # Data:
-        $fakeUserId = 1234;
-        $userTransfer = (new UserBuilder())
+        $notIgnorableUserTransfer = (new UserBuilder())
             ->seed([
-                'idUser' => $fakeUserId,
-                'isSystemUser' => null,
+                'username' => static::NOT_IGNORABLE_USER,
             ])
             ->build();
-
         # Prophecies:
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
@@ -679,7 +671,7 @@ class AuthCest
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
-        $userFacade->getCurrentUser()->willReturn($userTransfer);
+        $userFacade->getCurrentUser()->willReturn($notIgnorableUserTransfer);
 
         # Expected calls:
 
@@ -689,10 +681,12 @@ class AuthCest
             $secondFactorAuthConfig->reveal(),
             $secondFactorRepository->reveal(),
             $googleAuthenticator->reveal(),
-            $secondFactoryEntityManager->reveal()
+            $secondFactoryEntityManager->reveal(),
         );
 
-        $result = $SUT->isIgnorableUser($userTransfer);
+        $secondFactorAuthConfig->getIgnorableUsers()->willReturn([static::IGNORABLE_USER]);
+
+        $result = $SUT->isIgnorableUser($notIgnorableUserTransfer);
         $I->assertFalse($result);
     }
 }

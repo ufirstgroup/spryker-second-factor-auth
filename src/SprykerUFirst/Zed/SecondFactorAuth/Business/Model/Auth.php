@@ -1,16 +1,21 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Business\Model;
 
 use DateTime;
 use Exception;
 use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\SecondFactorAuth\Persistence\SpyUfgSecondFactorAuthTrustedDevice;
+use PragmaRX\Google2FA\Google2FA;
+use Spryker\Zed\User\Business\UserFacadeInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
-use PragmaRX\Google2FA\Google2FA;
-use Spryker\Zed\User\Business\UserFacadeInterface;
 
 class Auth
 {
@@ -43,7 +48,7 @@ class Auth
      * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
      * @param \SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig $config
      * @param \SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface $repository
-     * @param PragmaRX\Google2FA\Google2FA $googleAuthenticator
+     * @param \SprykerUFirst\Zed\SecondFactorAuth\Business\Model\PragmaRX\Google2FA\Google2FA $googleAuthenticator
      * @param \SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface $entityManager
      */
     public function __construct(
@@ -286,7 +291,8 @@ class Auth
     {
         $ignorablePaths = $this->config->getIgnorablePaths();
         foreach ($ignorablePaths as $ignore) {
-            if (($bundle === $ignore['bundle'] || $ignore['bundle'] === '*') &&
+            if (
+                ($bundle === $ignore['bundle'] || $ignore['bundle'] === '*') &&
                 ($controller === $ignore['controller'] || $ignore['controller'] === '*') &&
                 ($action === $ignore['action'] || $ignore['action'] === '*')
             ) {
@@ -298,7 +304,7 @@ class Auth
     }
 
     /**
-     * @param \Generated\Shared\Transfer\UserTransfer $user
+     * @param \Generated\Shared\Transfer\UserTransfer|null $currentUserTransfer
      *
      * @return bool
      * */
@@ -308,6 +314,6 @@ class Auth
             $currentUserTransfer = $this->userFacade->getCurrentUser();
         }
 
-        return $currentUserTransfer->getIsSystemUser() && !$currentUserTransfer->getIdUser();
+        return in_array($currentUserTransfer->getUsername(), $this->config->getIgnorableUsers());
     }
 }
