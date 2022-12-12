@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
 
 namespace SprykerUFirstTest\Zed\SecondFactorAuth\unit\Communication\Form;
-
 
 use Spryker\Shared\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +26,7 @@ abstract class AbstractFormCest
             null,
             $eventDispatcher->reveal(),
             $formFactory->reveal(),
-            []
+            [],
         );
 
         return $formBuilder;

@@ -1,6 +1,13 @@
 <?php
+
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirstTest\Zed\SecondFactorAuth;
 
+use Codeception\Actor;
 use Codeception\Scenario;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
@@ -11,6 +18,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Inherited Methods
+ *
  * @method void wantToTest($text)
  * @method void wantTo($text)
  * @method void execute($callable)
@@ -23,20 +31,19 @@ use Symfony\Component\Form\FormFactoryInterface;
  * @method void pause()
  *
  * @SuppressWarnings(PHPMD)
-*/
-class SecondFactorAuthUnitTester extends \Codeception\Actor
+ */
+class SecondFactorAuthUnitTester extends Actor
 {
     use _generated\SecondFactorAuthUnitTesterActions;
-
-   /**
-    * Define custom actions here
-    */
 
     /**
      * @var \Prophecy\Prophet
      */
     private $prophet;
 
+    /**
+     * @param \Codeception\Scenario $scenario
+     */
     public function __construct(Scenario $scenario)
     {
         $this->prophet = new Prophet();
@@ -68,7 +75,7 @@ class SecondFactorAuthUnitTester extends \Codeception\Actor
             null,
             $eventDispatcher->reveal(),
             $formFactory->reveal(),
-            []
+            [],
         );
 
         return $formBuilder;

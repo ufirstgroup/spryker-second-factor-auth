@@ -1,13 +1,17 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\EventDispatcher;
 
-use Spryker\Shared\Auth\AuthConstants;
-use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\EventDispatcher\EventDispatcherInterface;
 use Spryker\Shared\EventDispatcherExtension\Dependency\Plugin\EventDispatcherPluginInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -63,13 +67,14 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
         }
 
         # Is it a systemUser and doesn't have id set? => all good.
-        if($secondFactorAuthFacade->isIgnorableUser()){
+        if ($secondFactorAuthFacade->isIgnorableUser()) {
             return $event;
         }
 
         # Are we already authenticated with two factors? => all good.
         # Are we not registered for 2FA and 2FA is not required? => all good.
-        if ($secondFactorAuthFacade->isAuthenticated($request->cookies->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_DEVICE_COOKIE_NAME))
+        if (
+            $secondFactorAuthFacade->isAuthenticated($request->cookies->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_DEVICE_COOKIE_NAME))
             || (!$config->getIsSecondFactorAuthRequired() && !$secondFactorAuthFacade->isUserRegistered())
         ) {
             return $event;
@@ -78,6 +83,7 @@ class SecondFactorAuthorizationEventDispatcherPlugin extends AbstractPlugin impl
         # Are we not registered for 2FA but 2FA required? => redirect to 2FA registration page.
         if ($config->getIsSecondFactorAuthRequired() && !$secondFactorAuthFacade->isUserRegistered()) {
             $event->setResponse(new RedirectResponse($config->getSecondFactorAuthRegistrationUrl()));
+
             return $event;
         }
 

@@ -1,10 +1,14 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirstTest\Zed\SecondFactorAuth\unit\Communication\Form;
 
-use SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\RegistrationForm;
-use SprykerUFirstTest\Zed\CompanyGui\CompanyGuiUnitTester;
+use SprykerUFirstTest\Zed\SecondFactorAuth\SecondFactorAuthUnitTester;
 
 /**
  * Auto-generated group annotations

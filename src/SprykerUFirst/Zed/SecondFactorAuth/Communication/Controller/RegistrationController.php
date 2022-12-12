@@ -1,14 +1,20 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Controller;
 
-use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
+use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\RegistrationForm;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
-use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,12 +27,15 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RegistrationController extends AbstractController
 {
+    /**
+     * @var string
+     */
     public const PARAM_SECRET = 'secret';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response|array
      */
     public function indexAction(Request $request)
     {
@@ -62,7 +71,7 @@ class RegistrationController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response|array
      */
     public function registerAction(Request $request)
     {
@@ -77,7 +86,7 @@ class RegistrationController extends AbstractController
 
             $isRegistered = $this->getFacade()->registerCurrentUser(
                 $formData[RegistrationForm::SECRET],
-                $formData[RegistrationForm::FIELD_CODE]
+                $formData[RegistrationForm::FIELD_CODE],
             );
 
             if ($isRegistered) {
@@ -111,7 +120,7 @@ class RegistrationController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function unregisterAction()
+    public function unregisterAction(): RedirectResponse
     {
         $this->getFacade()->unregisterUser();
         $this->addSuccessMessage('Second factor authentication is disabled for your account now.');
@@ -129,8 +138,8 @@ class RegistrationController extends AbstractController
         $writer = new Writer(
             new ImageRenderer(
                 new RendererStyle(400),
-                new SvgImageBackEnd()
-            )
+                new SvgImageBackEnd(),
+            ),
         );
 
         return base64_encode($writer->writeString($qrCodeUrl));

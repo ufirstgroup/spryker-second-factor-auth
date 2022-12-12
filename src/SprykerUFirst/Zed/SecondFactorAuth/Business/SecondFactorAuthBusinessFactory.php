@@ -1,12 +1,17 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Business;
 
-use SprykerUFirst\Zed\SecondFactorAuth\Business\Model\Auth;
-use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthDependencyProvider;
-use Spryker\Zed\User\Business\UserFacadeInterface;
 use PragmaRX\Google2FA\Google2FA;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\User\Business\UserFacadeInterface;
+use SprykerUFirst\Zed\SecondFactorAuth\Business\Model\Auth;
+use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthDependencyProvider;
 
 /**
  * Class SecondFactorAuthBusinessFactory
@@ -28,14 +33,14 @@ class SecondFactorAuthBusinessFactory extends AbstractBusinessFactory
             $this->getConfig(),
             $this->getRepository(),
             $this->createGoogleAuthenticator(),
-            $this->getEntityManager()
+            $this->getEntityManager(),
         );
     }
 
     /**
      * @return \Spryker\Zed\User\Business\UserFacadeInterface
      */
-    private function getUserFacade(): UserFacadeInterface
+    protected function getUserFacade(): UserFacadeInterface
     {
         return $this->getProvidedDependency(SecondFactorAuthDependencyProvider::FACADE_USER);
     }
@@ -43,7 +48,7 @@ class SecondFactorAuthBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \PragmaRX\Google2FA\Google2FA
      */
-    private function createGoogleAuthenticator(): Google2FA
+    protected function createGoogleAuthenticator(): Google2FA
     {
         return new Google2FA();
     }

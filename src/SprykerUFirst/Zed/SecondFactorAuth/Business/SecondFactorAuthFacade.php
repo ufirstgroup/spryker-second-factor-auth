@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Business;
 
 use Generated\Shared\Transfer\UserTransfer;
@@ -14,6 +19,10 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthFacadeInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string|null $device
      *
      * @return bool
@@ -26,6 +35,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string|null $bundle
      * @param string|null $controller
      * @param string|null $action
@@ -40,6 +53,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string $device
      *
      * @return void
@@ -52,6 +69,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string $code
      *
      * @return bool
@@ -62,6 +83,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string $secret
      * @param string $code
      *
@@ -73,6 +98,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param int|null $idUser
      *
      * @return void
@@ -83,6 +112,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\UserTransfer|null $currentUserTransfer
      *
      * @return bool
@@ -93,6 +126,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @return string
      */
     public function createSecret(): string
@@ -101,6 +138,10 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param string $secret
      *
      * @return string
@@ -109,7 +150,12 @@ class SecondFactorAuthFacade extends AbstractFacade implements SecondFactorAuthF
     {
         return $this->getFactory()->createAuth()->getUrl($secret);
     }
+
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\UserTransfer|null $currentUserTransfer
      *
      * @return bool

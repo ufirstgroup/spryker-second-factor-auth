@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -17,7 +22,14 @@ use Symfony\Component\Validator\Constraints\Required;
  */
 class AuthenticationForm extends AbstractType
 {
+    /**
+     * @var string
+     */
     public const FIELD_CODE = 'code';
+
+    /**
+     * @var string
+     */
     public const FIELD_TRUST_DEVICE = 'trust_device';
 
     /**
@@ -49,7 +61,7 @@ class AuthenticationForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'Authenticator Code',
                     'autofocus' => true,
-                    'autocomplete' => 'off'
+                    'autocomplete' => 'off',
                 ],
             ]);
 
