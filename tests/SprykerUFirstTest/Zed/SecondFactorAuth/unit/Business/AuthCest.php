@@ -183,7 +183,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Stubs:
@@ -230,7 +230,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $trustedDeviceQuery = $I->prophesize(SpyUfgSecondFactorAuthTrustedDeviceQuery::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
@@ -276,7 +276,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $trustedDeviceQuery = $I->prophesize(SpyUfgSecondFactorAuthTrustedDeviceQuery::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
@@ -410,7 +410,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
@@ -456,7 +456,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
@@ -502,7 +502,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
@@ -548,7 +548,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
@@ -584,7 +584,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # system under test:
@@ -626,7 +626,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:
@@ -667,7 +667,7 @@ class AuthCest
         $userFacade = $I->prophesize(UserFacadeInterface::class);
         $secondFactorAuthConfig = $I->prophesize(SecondFactorAuthConfig::class);
         $secondFactorRepository = $I->prophesize(SecondFactorAuthRepositoryInterface::class);
-        $googleAuthenticator = $I->prophesize(GoogleAuthenticatorInterface::class);
+        $googleAuthenticator = $I->prophesize(Google2FA::class);
         $secondFactoryEntityManager = $I->prophesize(SecondFactorAuthEntityManagerInterface::class);
 
         # Mocks:

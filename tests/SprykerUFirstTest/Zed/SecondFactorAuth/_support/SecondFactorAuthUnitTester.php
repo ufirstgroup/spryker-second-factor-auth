@@ -67,8 +67,8 @@ class SecondFactorAuthUnitTester extends Actor
      */
     public function createFormBuilder(): FormBuilderInterface
     {
-        $formFactory = $this->prophecyHelper->prophesize(FormFactoryInterface::class);
-        $eventDispatcher = $this->prophecyHelper->prophesize(EventDispatcher::class);
+        $formFactory = $this->prophet->prophesize(FormFactoryInterface::class);
+        $eventDispatcher = $this->prophet->prophesize(EventDispatcher::class);
 
         $formBuilder = new FormBuilder(
             'form',
