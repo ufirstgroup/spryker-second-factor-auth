@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Persistence;
 
 use Generated\Shared\Transfer\UserTransfer;

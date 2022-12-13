@@ -1,17 +1,41 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth;
 
 use Spryker\Shared\Application\ApplicationConstants;
-use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
+use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 
 class SecondFactorAuthConfig extends AbstractBundleConfig
 {
+    /**
+     * @var string
+     */
     public const SECOND_FACTOR_URL = '/second-factor-auth/authentication';
+
+    /**
+     * @var string
+     */
     public const URL_REGISTRATION = '/second-factor-auth/registration';
+
+    /**
+     * @var string
+     */
     public const URL_REGISTRATION_REGISTER = '/second-factor-auth/registration/register';
+
+    /**
+     * @var string
+     */
     public const URL_REGISTRATION_UNREGISTER = '/second-factor-auth/registration/unregister';
+
+    /**
+     * @var string
+     */
     public const URL_USER_UNREGISTER = '/second-factor-auth/user/unregister';
 
     /**
@@ -24,7 +48,7 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     /**
      * @var array
      */
-    protected $ignorable = [
+    protected $ignorablePaths = [
         [
             'bundle' => 'security-gui',
             'controller' => '*',
@@ -43,6 +67,13 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     ];
 
     /**
+     * @var array<string>
+     */
+    protected $ignorableUsers = [];
+
+    /**
+     * @api
+     *
      * @return string
      */
     public function getSecondFactorAuthUrl(): string
@@ -51,23 +82,39 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return array
      */
-    public function getIgnorable(): array
+    public function getIgnorablePaths(): array
     {
-        return $this->ignorable;
+        return $this->ignorablePaths;
     }
 
     /**
+     * @api
+     *
+     * @return array<string>
+     */
+    public function getIgnorableUsers(): array
+    {
+        $ignorableUsers = array_merge($this->ignorableUsers, $this->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_IGNORABLE_USERS));
+
+        return $ignorableUsers;
+    }
+
+    /**
+     * @api
+     *
      * @param string $bundle
      * @param string $controller
      * @param string $action
      *
      * @return void
      */
-    public function addIgnorable(string $bundle, string $controller, string $action): void
+    public function addIgnorablePath(string $bundle, string $controller, string $action): void
     {
-        $this->ignorable[] = [
+        $this->ignorablePaths[] = [
             'bundle' => $bundle,
             'controller' => $controller,
             'action' => $action,
@@ -75,6 +122,20 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
+     * @param string $username
+     *
+     * @return void
+     */
+    public function addIgnorableUser(string $username): void
+    {
+        $this->ignorableUsers[] = $username;
+    }
+
+    /**
+     * @api
+     *
      * @return string
      */
     public function getHomePath(): string
@@ -83,6 +144,8 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getSecondFactorAuthRegistrationUrl(): string
@@ -91,6 +154,8 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getHostname(): string
@@ -99,6 +164,8 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return bool
      */
     public function getIsSecondFactorAuthRequired(): bool

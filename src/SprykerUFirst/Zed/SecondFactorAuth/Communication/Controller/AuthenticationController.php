@@ -1,13 +1,17 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Controller;
 
 use DateTime;
+use Ramsey\Uuid\Uuid;
+use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\AuthenticationForm;
-use Ramsey\Uuid\Uuid;
-use Spryker\Zed\Auth\AuthConfig;
-use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,7 +28,7 @@ class AuthenticationController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response|array
      */
     public function indexAction(Request $request)
     {
@@ -42,7 +46,7 @@ class AuthenticationController extends AbstractController
             $formData = $form->getData();
 
             $isAuthenticated = $this->getFacade()->authenticate(
-                $formData[AuthenticationForm::FIELD_CODE]
+                $formData[AuthenticationForm::FIELD_CODE],
             );
 
             if ($isAuthenticated) {
@@ -55,8 +59,8 @@ class AuthenticationController extends AbstractController
                         new Cookie(
                             SecondFactorAuthConstants::SECOND_FACTOR_AUTH_DEVICE_COOKIE_NAME,
                             $trustedDeviceCookie,
-                            (new DateTime())->modify('+2 weeks')
-                        )
+                            (new DateTime())->modify('+2 weeks'),
+                        ),
                     );
                 }
 

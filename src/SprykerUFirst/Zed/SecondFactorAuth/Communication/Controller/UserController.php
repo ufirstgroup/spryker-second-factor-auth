@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Controller;
 
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
@@ -23,14 +28,15 @@ class UserController extends AbstractController
     public function unregisterAction(Request $request)
     {
         $idUser = $request->get('id-user');
-        if (empty($idUser)) {
+        if (!$idUser) {
             $this->addErrorMessage('You have to pass a user!');
-            
+
             return $this->redirectResponse('/user');
         }
 
         $this->getFacade()->unregisterUser($idUser);
         $this->addSuccessMessage('User is unregistered.');
+
         return $this->redirectResponse('/user');
     }
 }

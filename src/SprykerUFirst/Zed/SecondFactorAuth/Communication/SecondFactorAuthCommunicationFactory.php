@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication;
 
+use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\AuthenticationForm;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\RegistrationForm;
 use SprykerUFirst\Zed\SecondFactorAuth\Communication\Form\UnregistrationForm;
-use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -44,10 +50,10 @@ class SecondFactorAuthCommunicationFactory extends AbstractCommunicationFactory
     /**
      * @return \Symfony\Component\Form\FormFactoryInterface
      */
-    protected function getFormFactory()
+    protected function getFormFactory(): FormFactoryInterface
     {
         $container = $this->createContainerWithProvidedDependencies();
 
-        return $container[self::FORM_FACTORY];
+        return $container[static::FORM_FACTORY];
     }
 }

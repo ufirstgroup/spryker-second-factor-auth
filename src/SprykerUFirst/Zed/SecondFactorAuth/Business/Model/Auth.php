@@ -1,16 +1,21 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Business\Model;
 
 use DateTime;
 use Exception;
 use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\SecondFactorAuth\Persistence\SpyUfgSecondFactorAuthTrustedDevice;
+use PragmaRX\Google2FA\Google2FA;
+use Spryker\Zed\User\Business\UserFacadeInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface;
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
-use PragmaRX\Google2FA\Google2FA;
-use Spryker\Zed\User\Business\UserFacadeInterface;
 
 class Auth
 {
@@ -43,7 +48,7 @@ class Auth
      * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
      * @param \SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig $config
      * @param \SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthRepositoryInterface $repository
-     * @param PragmaRX\Google2FA\Google2FA $googleAuthenticator
+     * @param \SprykerUFirst\Zed\SecondFactorAuth\Business\Model\PragmaRX\Google2FA\Google2FA $googleAuthenticator
      * @param \SprykerUFirst\Zed\SecondFactorAuth\Persistence\SecondFactorAuthEntityManagerInterface $entityManager
      */
     public function __construct(
@@ -284,9 +289,10 @@ class Auth
      */
     public function isIgnorablePath(?string $bundle, ?string $controller, ?string $action): bool
     {
-        $ignorable = $this->config->getIgnorable();
-        foreach ($ignorable as $ignore) {
-            if (($bundle === $ignore['bundle'] || $ignore['bundle'] === '*') &&
+        $ignorablePaths = $this->config->getIgnorablePaths();
+        foreach ($ignorablePaths as $ignore) {
+            if (
+                ($bundle === $ignore['bundle'] || $ignore['bundle'] === '*') &&
                 ($controller === $ignore['controller'] || $ignore['controller'] === '*') &&
                 ($action === $ignore['action'] || $ignore['action'] === '*')
             ) {
@@ -295,5 +301,19 @@ class Auth
         }
 
         return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer|null $currentUserTransfer
+     *
+     * @return bool
+     * */
+    public function isIgnorableUser(?UserTransfer $currentUserTransfer = null): bool
+    {
+        if ($currentUserTransfer === null) {
+            $currentUserTransfer = $this->userFacade->getCurrentUser();
+        }
+
+        return in_array($currentUserTransfer->getUsername(), $this->config->getIgnorableUsers());
     }
 }

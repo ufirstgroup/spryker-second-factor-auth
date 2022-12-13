@@ -3,14 +3,17 @@
   "type": "library",
   "description": "Second Factor Authentication for Spryker ZED",
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.3",
     "spryker/security": "^1.6.0",
     "pragmarx/google2fa": "^8.0",
     "bacon/bacon-qr-code": "^2.0",
     "spryker/ramsey-uuid": "1.0.0 || 2.0.0"
   },
   "require-dev": {
+    "codeception/module-asserts": "^2.0",
+    "phpspec/prophecy": "^1.16",
     "spryker/application": "*",
+    "spryker/code-sniffer": "^0.17.14",
     "spryker/config": "*",
     "spryker/container": "*",
     "spryker/event-dispatcher": "*",
@@ -36,6 +39,9 @@
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

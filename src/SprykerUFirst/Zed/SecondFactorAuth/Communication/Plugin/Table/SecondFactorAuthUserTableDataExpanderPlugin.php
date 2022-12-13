@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\Table;
 
-use Orm\Zed\SecondFactorAuth\Persistence\Map\SpyUfgSecondFactorAuthSecretTableMap;
 use Orm\Zed\User\Persistence\Map\SpyUserTableMap;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\UserExtension\Dependency\Plugin\UserTableDataExpanderPluginInterface;
@@ -17,6 +21,10 @@ use Spryker\Zed\UserExtension\Dependency\Plugin\UserTableDataExpanderPluginInter
 class SecondFactorAuthUserTableDataExpanderPlugin extends AbstractPlugin implements UserTableDataExpanderPluginInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param array $item
      *
      * @return array
@@ -29,11 +37,15 @@ class SecondFactorAuthUserTableDataExpanderPlugin extends AbstractPlugin impleme
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
      * @param array $user
      *
      * @return string
      */
-    public function createSecondFAStatusLabel(array $user)
+    public function createSecondFAStatusLabel(array $user): string
     {
         $userIsRegistered = $this->getRepository()->doesUserHaveSecret($user[SpyUserTableMap::COL_ID_USER]);
 

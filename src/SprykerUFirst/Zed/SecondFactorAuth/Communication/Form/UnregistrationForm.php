@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Form;
 
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;

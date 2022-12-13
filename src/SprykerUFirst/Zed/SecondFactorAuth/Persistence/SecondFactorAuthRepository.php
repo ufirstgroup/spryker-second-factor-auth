@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Persistence;
 
 use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\SecondFactorAuth\Persistence\SpyUfgSecondFactorAuthTrustedDeviceQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
+
 /**
  * Class SecondFactorAuthQueryContainer
  *

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * MIT License
+ * See LICENSE file.
+ */
+
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Form;
 
 use SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig;
@@ -19,7 +24,14 @@ use Symfony\Component\Validator\Constraints\Required;
  */
 class RegistrationForm extends AbstractType
 {
+    /**
+     * @var string
+     */
     public const FIELD_CODE = 'code';
+
+    /**
+     * @var string
+     */
     public const SECRET = 'secret';
 
     /**
@@ -31,7 +43,7 @@ class RegistrationForm extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(self::SECRET);
+        $resolver->setRequired(static::SECRET);
         parent::configureOptions($resolver);
     }
 
@@ -56,7 +68,7 @@ class RegistrationForm extends AbstractType
     protected function addCodeField(FormBuilderInterface $builder)
     {
         $builder
-            ->add(self::FIELD_CODE, TextType::class, [
+            ->add(static::FIELD_CODE, TextType::class, [
                 'constraints' => [
                     new Required(),
                     new NotBlank(),
@@ -64,7 +76,7 @@ class RegistrationForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'Authenticator Code',
                     'autofocus' => true,
-                    'autocomplete' => 'off'
+                    'autocomplete' => 'off',
                 ],
             ]);
 
@@ -79,8 +91,8 @@ class RegistrationForm extends AbstractType
      */
     protected function addSecretField(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(self::SECRET, HiddenType::class, [
-            'data' => $options[self::SECRET],
+        $builder->add(static::SECRET, HiddenType::class, [
+            'data' => $options[static::SECRET],
         ]);
 
         return $this;
