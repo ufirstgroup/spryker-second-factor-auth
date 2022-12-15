@@ -98,7 +98,7 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
      */
     public function getIgnorableUsers(): array
     {
-        $ignorableUsers = array_merge($this->ignorableUsers, $this->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_IGNORABLE_USERS));
+        $ignorableUsers = array_merge($this->ignorableUsers, $this->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_IGNORABLE_USERS, []));
 
         return $ignorableUsers;
     }
