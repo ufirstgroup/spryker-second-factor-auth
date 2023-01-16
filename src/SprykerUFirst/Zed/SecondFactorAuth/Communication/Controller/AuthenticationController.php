@@ -52,7 +52,7 @@ class AuthenticationController extends AbstractController
             if ($isAuthenticated) {
                 $redirectResponse = $this->redirectResponse($this->getFactory()->getConfig()->getHomePath());
 
-                if ($formData[AuthenticationForm::FIELD_TRUST_DEVICE]) {
+                if ($formData[AuthenticationForm::FIELD_TRUST_DEVICE]?? false) {
                     $trustedDeviceCookie = Uuid::uuid1()->toString();
                     $this->getFacade()->trustDevice($trustedDeviceCookie);
                     $redirectResponse->headers->setCookie(
