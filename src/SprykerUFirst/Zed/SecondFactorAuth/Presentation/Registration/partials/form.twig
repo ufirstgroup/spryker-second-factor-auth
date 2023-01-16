@@ -32,7 +32,7 @@
    {% endif %}
 
     <div class="second-factor-device-list">
-        <b>{{ 'Install one of these applications for 2FA: ' | trans }}</b><a target="_blank" href="https://authy.com/">Authy</a> (preferred) | <a target="_blank" href="https://support.google.com/accounts/answer/1066447">Google Authenticator</a>
+        <b>{{ 'Install one of these applications for 2FA:' | trans }}</b> <a target="_blank" href="https://authy.com/">Authy</a> (preferred) | <a target="_blank" href="https://support.google.com/accounts/answer/1066447">Google Authenticator</a>
     </div>
 
     <div class="row">
@@ -41,7 +41,7 @@
                 <img src={{ qr_code_url }}>
             </p>
             <p>
-            <div>Alternatively you can enter the code manually: <b>{{ secret }}</b></div>
+            <div>{{ 'Alternatively you can enter the code manually:' | trans }} <b>{{ secret }}</b></div>
             </p>
 
         </div>
@@ -50,7 +50,7 @@
             <div class="form-group">
                 <button class="btn btn-success btn-block btn-outline btn" type="submit">
                     {%  if status == 'registered' %}
-                        {{ 'Unegister' | trans }}
+                        {{ 'Unregister' | trans }}
                     {% else %}
                         {{ 'Register' | trans }}
                     {%  endif %}
@@ -79,7 +79,7 @@
     <div class="form-group">
         <button class="btn btn-success btn-block btn-outline btn" type="submit">
             {%  if status == 'registered' %}
-                {{ 'Unegister' | trans }}
+                {{ 'Unregister' | trans }}
             {% else %}
                 {{ 'Register' | trans }}
             {%  endif %}
