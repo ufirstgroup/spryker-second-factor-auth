@@ -4,13 +4,13 @@
 
 {% block content %}
 
-    <div>
+    <div class="second-factor-auth">
         {{ form_start(form) }}
 
             {% include '@SecurityGui/Partial/form-message.twig' %}
 
             <p>
-                {{ 'You are using second factor authentication. User your mobile application and enter the code into the field below.' | trans }}
+                {{ 'You are using second factor authentication. Use your mobile application and enter the code into the field below.' | trans }}
             </p>
 
             {{ form_errors(form) }}
