@@ -18,6 +18,24 @@ class SecondFactorAuthUserTableConfigExpanderPlugin implements UserTableConfigEx
     public const SECOND_FACTOR_AUTH_STATUS = '2fa status';
 
     /**
+     * @var string
+     */
+    public const SECOND_FACTOR_AUTH_RESET = 'reset 2fa';
+
+    /**
+     * @var bool
+     */
+    private bool $shouldShowSecondFAResetColumn;
+
+    /**
+     * @param bool $shouldShowSecondFAReset
+     */
+    public function __construct(bool $shouldShowSecondFAReset = false)
+    {
+        $this->shouldShowSecondFAResetColumn = $shouldShowSecondFAReset;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @api
@@ -29,10 +47,14 @@ class SecondFactorAuthUserTableConfigExpanderPlugin implements UserTableConfigEx
     public function expandConfig(TableConfiguration $config): TableConfiguration
     {
         $header = $config->getHeader();
-        $header = $this->addAfterPosition($header, 5, [static::SECOND_FACTOR_AUTH_STATUS => static::SECOND_FACTOR_AUTH_STATUS]);
-        $config->setHeader($header);
-
         $config->addRawColumn(static::SECOND_FACTOR_AUTH_STATUS);
+        $header = $this->addAfterPosition($header, 5, [static::SECOND_FACTOR_AUTH_STATUS => static::SECOND_FACTOR_AUTH_STATUS]);
+
+        if ($this->shouldShowSecondFAResetColumn) {
+            $config->addRawColumn(static::SECOND_FACTOR_AUTH_RESET);
+            $header = $this->addAfterPosition($header, 6, [static::SECOND_FACTOR_AUTH_RESET => static::SECOND_FACTOR_AUTH_RESET]);
+        }
+        $config->setHeader($header);
 
         return $config;
     }

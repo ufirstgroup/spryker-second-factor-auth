@@ -32,6 +32,7 @@ class SecondFactorAuthUserTableDataExpanderPlugin extends AbstractPlugin impleme
     public function expandData(array $item): array
     {
         $item[SecondFactorAuthUserTableConfigExpanderPlugin::SECOND_FACTOR_AUTH_STATUS] = $this->createSecondFAStatusLabel($item);
+        $item[SecondFactorAuthUserTableConfigExpanderPlugin::SECOND_FACTOR_AUTH_RESET] = $this->createSecondFAResetButton($item);
 
         return $item;
     }
@@ -54,5 +55,27 @@ class SecondFactorAuthUserTableDataExpanderPlugin extends AbstractPlugin impleme
         }
 
         return '<span class="label label-danger" title="Deactivated">Deactivated</span>';
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param array $user
+     *
+     * @return string
+     */
+    public function createSecondFAResetButton(array $user): string
+    {
+        $userIsRegistered = $this->getRepository()->doesUserHaveSecret($user[SpyUserTableMap::COL_ID_USER]);
+
+        $buttonHTML = '<a href="/second-factor-auth/user/unregister?id-user=' . $user[SpyUserTableMap::COL_ID_USER] . '" class="btn btn-xs btn-outline btn-danger">Reset 2fa</a>';
+
+        if ($userIsRegistered) {
+            return $buttonHTML;
+        }
+
+        return '<span class="btn btn-xs btn-outline btn-view disabled">Reset 2fa</span>';
     }
 }
