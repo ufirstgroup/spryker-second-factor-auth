@@ -86,30 +86,12 @@ class UserDependencyProvider extends SprykerUserDependencyProvider
 
 ## Add Reset 2FA column to the User Table
 
-In order to see the Reset 2FA column with buttons to reset second factor authentification for each user in the administration GUI, pass `true` as the first value `SecondFactorAuthUserTableConfigExpanderPlugin` (it is false by default):
+In order to see the Reset 2FA column with buttons to reset second factor authentification for each user in the administration GUI add the following line to your `config_default.php`:
 
 ```php
-<?php
-
-namespace Pyz\Zed\User;
-
-use Spryker\Zed\User\UserDependencyProvider as SprykerUserDependencyProvider;
-use SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\Table\SecondFactorAuthUserTableConfigExpanderPlugin;
-use SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\Table\SecondFactorAuthUserTableDataExpanderPlugin;
-
-class UserDependencyProvider extends SprykerUserDependencyProvider
-{
-
-    /**
-     * @return \Spryker\Zed\UserExtension\Dependency\Plugin\UserTableConfigExpanderPluginInterface[]
-     */
-    protected function getUserTableConfigExpanderPlugins(): array
-    {
-        return [
-            new SecondFactorAuthUserTableConfigExpanderPlugin(true),
-        ];
-    }
-}
+use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
+...
+$config[SecondFactorAuthConstants::SHOW_SECOND_FACTOR_AUTH_RESET] = true;
 ```
 
 If this column is enabled, we recomended allowing it to the highest permissions having roles by adding a rule:

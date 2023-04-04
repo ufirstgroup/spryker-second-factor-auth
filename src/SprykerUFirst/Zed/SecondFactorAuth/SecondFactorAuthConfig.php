@@ -172,4 +172,12 @@ class SecondFactorAuthConfig extends AbstractBundleConfig
     {
         return $this->get(SecondFactorAuthConstants::SECOND_FACTOR_AUTH_REQUIRED, false);
     }
+
+    /**
+     * @return bool
+     */
+    public function getShouldShowSecondFAReset(): bool
+    {
+        return $this->get(SecondFactorAuthConstants::SHOW_SECOND_FACTOR_AUTH_RESET);
+    }
 }
