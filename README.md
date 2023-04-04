@@ -83,3 +83,31 @@ class UserDependencyProvider extends SprykerUserDependencyProvider
     }
 }
 ```
+
+## Add Reset 2FA column to the User Table
+
+In order to see the Reset 2FA column with buttons to reset second factor authentification for each user in the administration GUI add the following line to your `config_default.php`:
+
+```php
+use SprykerUFirst\Shared\SecondFactorAuth\SecondFactorAuthConstants;
+...
+$config[SecondFactorAuthConstants::SHOW_SECOND_FACTOR_AUTH_RESET] = true;
+```
+
+If this column is enabled, we recomended allowing it to the highest permissions having roles by adding a rule:
+
+| Param      | Value              |
+|------------|--------------------|
+| Bundle     | second-factor-auth |
+| controller | user               |
+| action     | unregister         |
+| type       | allow              |
+
+Or if the entire `second-factor-auth` bundle allowed add this rule to the roles that should not be able to unregister other users.
+
+| Param      | Value              |
+|------------|--------------------|
+| Bundle     | second-factor-auth |
+| controller | user               |
+| action     | unregister         |
+| type       | deny               |

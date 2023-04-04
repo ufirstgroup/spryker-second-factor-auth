@@ -8,14 +8,23 @@
 namespace SprykerUFirst\Zed\SecondFactorAuth\Communication\Plugin\Table;
 
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
+use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\UserExtension\Dependency\Plugin\UserTableConfigExpanderPluginInterface;
 
-class SecondFactorAuthUserTableConfigExpanderPlugin implements UserTableConfigExpanderPluginInterface
+/**
+ * @method \SprykerUFirst\Zed\SecondFactorAuth\SecondFactorAuthConfig getConfig()
+ */
+class SecondFactorAuthUserTableConfigExpanderPlugin extends AbstractPlugin implements UserTableConfigExpanderPluginInterface
 {
     /**
      * @var string
      */
     public const SECOND_FACTOR_AUTH_STATUS = '2fa status';
+
+    /**
+     * @var string
+     */
+    public const SECOND_FACTOR_AUTH_RESET = 'reset 2fa';
 
     /**
      * {@inheritDoc}
@@ -29,10 +38,14 @@ class SecondFactorAuthUserTableConfigExpanderPlugin implements UserTableConfigEx
     public function expandConfig(TableConfiguration $config): TableConfiguration
     {
         $header = $config->getHeader();
-        $header = $this->addAfterPosition($header, 5, [static::SECOND_FACTOR_AUTH_STATUS => static::SECOND_FACTOR_AUTH_STATUS]);
-        $config->setHeader($header);
-
         $config->addRawColumn(static::SECOND_FACTOR_AUTH_STATUS);
+        $header = $this->addAfterPosition($header, 5, [static::SECOND_FACTOR_AUTH_STATUS => static::SECOND_FACTOR_AUTH_STATUS]);
+
+        if ($this->getConfig()->getShouldShowSecondFAReset()) {
+            $config->addRawColumn(static::SECOND_FACTOR_AUTH_RESET);
+            $header = $this->addAfterPosition($header, 6, [static::SECOND_FACTOR_AUTH_RESET => static::SECOND_FACTOR_AUTH_RESET]);
+        }
+        $config->setHeader($header);
 
         return $config;
     }

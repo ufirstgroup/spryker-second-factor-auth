@@ -26,4 +26,9 @@ interface SecondFactorAuthConstants
      * @var string
      */
     public const SECOND_FACTOR_AUTH_IGNORABLE_USERS = 'SECOND_FACTOR_AUTH_IGNORABLE_USERS';
+
+    /**
+     * @var string
+     */
+    public const SHOW_SECOND_FACTOR_AUTH_RESET = 'SHOW_SECOND_FACTOR_AUTH_RESET';
 }
