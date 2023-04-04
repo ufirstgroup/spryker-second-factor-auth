@@ -70,6 +70,7 @@ class SecondFactorAuthUserTableDataExpanderPlugin extends AbstractPlugin impleme
     {
         $userIsRegistered = $this->getRepository()->doesUserHaveSecret($user[SpyUserTableMap::COL_ID_USER]);
 
+        /* TODO: Localise static strings */
         $buttonHTML = '<a href="/second-factor-auth/user/unregister?id-user=' . $user[SpyUserTableMap::COL_ID_USER] . '" class="btn btn-xs btn-outline btn-danger">Reset 2fa</a>';
 
         if ($userIsRegistered) {
